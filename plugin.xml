@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension 
+      point="org.eclipse.ui.views"> 
+   <category 
+         id="com.free.menu.category"
+         name="Menu Example View"> 
+   </category> 
+   <view 
+         category="com.free.menu.category"
+         class="com.free.menu.view.MenuExplorer"
+         id="com.free.menu.view.MenuExplorer"
+         name="Menu Explorer"
+         restorable="true"> 
+   </view> 
+ </extension>
+
+<extension 
+      point="org.eclipse.ui.commands"> 
+   <category 
+         id="com.free.menu.category"
+         name="Menu Example"> 
+   </category> 
+   <command 
+         categoryId="com.free.menu.category"
+         id="com.free.menu.commands.jokeCommand"
+         name="Joke Command"> 
+   </command> 
+   <command 
+         categoryId="com.free.menu.category"
+         id="com.free.menu.commands.angryCommand"
+         name="Angry Command"> 
+   </command> 
+ </extension>
+ 
+  <extension 
+       point="org.eclipse.ui.menus"> 
+  <menuContribution 
+      locationURI="menu:org.eclipse.ui.main.menu?after=additions"> 
+   <menu 
+     id="com.free.menu.MenuExample"
+          label="Menu Example"> 
+      <command 
+            commandId="com.free.menu.commands.jokeCommand"
+            style="push"> 
+      </command> 
+      <command 
+            commandId="com.free.menu.commands.angryCommand"
+            style="push"> 
+      </command> 
+   </menu> 
+ </menuContribution>
+ </extension>
+ 
+ <extension 
+       point="org.eclipse.ui.menus"> 
+    <menuContribution 
+          locationURI="menu:com.free.menu.view.MenuExplorer?after=additions"> 
+       <command 
+             commandId="com.free.menu.commands.jokeCommand"
+             icon="icons/searchres.gif"
+             style="push"> 
+             <visibleWhen 
+                   checkEnabled="false"> 
+                <with 
+                     variable="selection"> 
+                   <iterate 
+                        ifEmpty="true"
+                        operator="or"> 
+                    <or> 
+                        <instanceof 
+                                value="com.free.menu.model.Person"> 
+                        </instanceof>                                             
+                    </or> 
+                  </iterate> 
+                  </with> 
+               </visibleWhen>                 
+         </command> 
+      </menuContribution> 
+      <menuContribution 
+            locationURI="toolbar:com.free.menu.view.MenuExplorer?after=additions"> 
+         <command 
+               commandId="com.free.menu.commands.jokeCommand"
+               icon="icons/searchres.gif"
+               style="push"> 
+               <visibleWhen 
+                     checkEnabled="false"> 
+                  <with 
+                        variable="selection"> 
+                     <iterate 
+                           ifEmpty="true"
+                           operator="or"> 
+                        <or> 
+                              <instanceof 
+                                    value="com.free.menu.model.Person"> 
+                              </instanceof>                                             
+                        </or> 
+                     </iterate> 
+                  </with> 
+               </visibleWhen>  
+         </command> 
+      </menuContribution> 
+      <menuContribution 
+            locationURI="popup:com.free.menu.view.MenuExplorer?after=additions"> 
+         <command 
+               commandId="com.free.menu.commands.jokeCommand"
+               icon="icons/searchres.gif"
+               style="push"> 
+         </command> 
+         <command 
+               commandId="com.free.menu.commands.angryCommand"
+               style="push"> 
+         </command>      
+      </menuContribution> 
+ </extension>
+ 
+ <extension 
+      point="org.eclipse.ui.handlers"> 
+   <handler 
+         class="com.free.menu.actions.JokeCommand"
+         commandId="com.free.menu.commands.jokeCommand"> 
+      <enabledWhen> 
+         <count 
+               value="2"> 
+         </count> 
+      </enabledWhen> 
+   </handler> 
+   <handler 
+         class="com.free.menu.actions.AngryCommand"
+         commandId="com.free.menu.commands.angryCommand"> 
+   </handler> 
+ </extension>
+ 
+ 
+ <extension 
+      point="org.eclipse.ui.actionSets"> 
+   <actionSet 
+         id="com.free.menu.actionSet.MenuExample"
+         label="Menu Example"
+         visible="true"> 
+      <action 
+            class="com.free.menu.actions.SmileAction"
+            enablesFor="+"
+            icon="icons/searchres.gif"
+            id="com.free.menu.actions.smileAction"
+            label="Smile Action"
+            menubarPath="org.eclipse.search.menu/dialogGroup"
+            style="push"> 
+      </action> 
+   </actionSet> 
+ </extension>
+ 
+ 
+ <extension 
+      point="org.eclipse.ui.popupMenus"> 
+   <objectContribution 
+         adaptable="true"
+         id="com.free.menu.popupMenu"
+         objectClass="org.eclipse.core.resources.IResource"> 
+      <menu 
+            label="Menu Example"
+            path="additions"
+            id="com.free.menu.popupSubMenu"> 
+         <separator 
+               name="additions"> 
+         </separator> 
+      </menu> 
+      <action 
+            label="Hello Action"
+            class="com.free.menu.popup.actions.HelloAction"
+            menubarPath="com.free.menu.popupSubMenu/additions"
+            enablesFor="1"
+            id="com.free.menu.newAction"> 
+      </action> 
+   </objectContribution> 
+ </extension>
+ 
+ 
+ 
+</plugin>
